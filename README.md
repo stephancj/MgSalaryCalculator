@@ -1,4 +1,4 @@
-# irsa_calculator
+# Salary calculator
 
 A new Flutter project.
 
