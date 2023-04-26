@@ -97,21 +97,24 @@ class _ImpotRevenuCalculatorState extends State<ImpotRevenuCalculator> {
     return net;
   }
 
-  double netToBrutSalary(double net) {
-    _employeCnaps = net / 0.99 * 0.01;
-    _employeOstie = net / 0.99 * 0.01;
-    _baseIrsa = net / 0.99;
-    _irsa = max(
-        3000,
-        0 +
-            min(max(0, _baseIrsa - 350000), 50000) * 0.05 +
-            min(max(0, _baseIrsa - 400000), 100000) * 0.1 +
-            min(max(0, _baseIrsa - 500000), 100000) * 0.15 +
-            max(0, _baseIrsa - 600000) * 0.2 -
-            2000 * _children);
+  double netToBrut (double net) {
+    double brut = 0;
+    
+    if(net >= 562300){
+      //irsa = 27499.70 + 0.20*(0.98 * ((net + irsa) / 0.98) - 600001);
+      _irsa = ((27499.70 + 0.20 * net - 122400.2) / 0.80 + 3000) - (_children * 2000);
 
-    double totalDeductions = _employeCnaps + _employeOstie + _irsa;
-    double gross = net + totalDeductions;
-    return gross;
+    } 
+    ////A VERIFIER
+    else if (net >= 478500){
+      //irsa = 12499.85 + 0.15*(0.98 * ((net + irsa) / 0.98) - 500001);
+      _irsa = (12499.85 + 0.15 * net - 76500.15) / 0.85;
+    } else if (net >=  389000){
+      //irsa = 2499.85 + 0.10*(0.98 * ((net + irsa) / 0.98) - 400001);
+      _irsa = ((0.098*net - 38316.477) / 0.902);
+    }
+    
+    brut = (net + _irsa) / 0.98;
+    return brut + 3000;
   }
 }
